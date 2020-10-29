@@ -5,7 +5,7 @@ The project consists in an analyse of the dataset concerning children in highsch
 
 ## Data Explanation
 
-# *Contact-diaries-network_data_2013.csv*
+### *Contact-diaries-network_data_2013.csv*
 
 Format of the file : "i j w"
 
@@ -19,7 +19,7 @@ Meaning : *i* spent *x(w)* time with *j*
     - *w = 3* : between 15 minutes and 1 hour
     - *w = 4* : more than 1 hour
 
-# *Facebook-known-pairs_data_2013.csv*
+### *Facebook-known-pairs_data_2013.csv*
 
 Format of the file : "i j w"
 
@@ -29,7 +29,7 @@ Meaning : *i* is friend or not on Facebook with *j*
 - **j** ID j of another person (int)
 - **w** Status of Facebook friendship (bool)
 
-# *Friendship-network_data_2013.csv*
+### *Friendship-network_data_2013.csv*
 
 Format of the file : "i j"
 
@@ -38,7 +38,7 @@ Meaning : *i* reported a friendship with *j*
 - **i** ID i of a person (int)
 - **j** ID j of another person (int)
 
-# *High-School_data_2013*
+### *High-School_data_2013*
 
 Format of the file : "t i j Ci Cj"
 
@@ -50,7 +50,7 @@ Meaning : *i* from class *Ci* and *j* from class *Cj* where together at interval
 - **Ci** Class Ci of the person i (str)
 - **Cj** Class Cj of the person j (str)
 
-# *metadata_2013.txt*
+### *metadata_2013.txt*
 
 Format of the file : "i Ci Gi"
 
