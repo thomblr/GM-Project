@@ -1,9 +1,7 @@
 import csv
 import networkx as nx
+import random
 import matplotlib.pyplot as plt
-
-with open('data/Friendship-network_data_2013.csv', 'r') as f:
-    reader = csv.reader(f, delimiter=' ')
 
 #
 #  METADATA 2013 (ID, Class, Gender)
@@ -72,5 +70,51 @@ with open('data/Facebook-known-pairs_data_2013.csv', 'r') as f:
         if(int(line[2]) == 1):
             G.add_edge(int(line[0]), int(line[1]), weight=int(line[2]))
 
-    nx.draw(G, with_labels=True)
-    plt.show()
+    #nx.draw(G, with_labels=True)
+    
+
+#
+# Friendship network data 2013 (ID, ID)
+#
+
+with open('data/Friendship-network_data_2013.csv', 'r') as f:
+    network = csv.reader(f, delimiter=' ')
+
+    G = nx.DiGraph()
+    actors = []
+    for line in network:
+        if int(line[0]) not in actors:
+            actors.append(int(line[0]))
+            G.add_node(int(line[0]))
+        G.add_edge(int(line[0]), int(line[1]))
+
+    #nx.draw(G, with_labels=True)
+
+
+#
+# High School data 2013 (t, ID, ID, Class, Class)
+#
+
+with open('data/High-School_data_2013.csv', 'r') as f:
+    network = csv.reader(f, delimiter=' ')
+
+    G = nx.Graph()
+    classes = {}
+    actors = []
+
+    for line in network:
+        if line[3] not in classes:
+            classes[line[3]] = "color"
+        if line[4] not in classes: 
+            classes[line[4]] = "color"
+        if int(line[1]) not in actors:
+            actors.append(int(line[1]))
+            G.add_node(int(line[1]))
+        if int(line[2]) not in actors: 
+            actors.append(int(line[2]))
+            G.add_node(int(line[2]))
+        G.add_edge(int(line[1]), int(line[2]))
+
+    # nx.draw(G, with_labels=True)
+
+plt.show()
