@@ -1,10 +1,17 @@
 import csv
 import networkx as nx
+import community as cl
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
+from networkx.algorithms import approximation
 
 #
 #  METADATA 2013 (ID, Class, Gender)
 #
+
+meta_complete = {}
+meta_gender_based = {}
+meta_class_based = {}
 
 with open('data/metadata_2013.txt', 'r') as meta: #
     data_2013 = meta.read()                       # Load the file
@@ -15,26 +22,25 @@ with open('data/metadata_2013.txt', 'r') as meta: #
     for line in data_2013[:-1]:
         info = line.split('\t')
         complete_data[int(info[0])] = {'class': info[1], 'gender': info[2]}
+        meta_complete[int(info[0])] = {'class': info[1], 'gender': info[2]}
 
     # Graph of gender
-    gender_labels = ['F', 'M', 'Unknown']
-    genders = [0,0,0]
+    meta_gender_based = {'F': [], 'M': [], 'Unknown': []}
     for i in complete_data:
-        genders[gender_labels.index(complete_data[i]['gender'])] += 1
-
-    # plt.pie(genders, explode=(0.1, 0.1, 0.1), labels=gender_labels, autopct='%1.1f%%')
+        meta_gender_based[complete_data[i]['gender']].append(i)
 
     # Graph of classes
-    class_labels = []
+    meta_class_based = {}
     for i in complete_data:
-        if complete_data[i]['class'] not in class_labels:
-            class_labels.append(complete_data[i]['class'])
+        if complete_data[i]['class'] not in meta_class_based:
+            meta_class_based[complete_data[i]['class']] = []
+        meta_class_based[complete_data[i]['class']].append(i)
 
-    classes = [0] * len(class_labels)
-    for i in complete_data:
-        classes[class_labels.index(complete_data[i]['class'])] += 1
-
-    # plt.pie(classes, labels=class_labels, autopct='%1.1f%%')
+print(meta_complete)
+print('---')
+print(meta_gender_based)
+print('---')
+print(meta_class_based)
 
 #
 # Contact Diaries Network Data 2013 (ID, ID, contact_duration(w))
@@ -49,9 +55,9 @@ with open('data/Contact-diaries-network_data_2013.csv', 'r') as f:
         if int(line[0]) not in actors:
             actors.append(int(line[0]))
             G.add_node(int(line[0]))
-        G.add_edge(int(line[0]), int(line[1]), weight=int(line[2]))
+        G.add_edge(int(line[0]), int(line[1]), weight=(1/int(line[2])))
 
-    # nx.draw(G, with_labels=True)
+    #nx.draw(G, with_labels=True)
 
 #
 # Facebook known pairs (ID, ID, bool)
@@ -69,7 +75,12 @@ with open('data/Facebook-known-pairs_data_2013.csv', 'r') as f:
         if(int(line[2]) == 1):
             G.add_edge(int(line[0]), int(line[1]), weight=int(line[2]))
 
-    #nx.draw(G, with_labels=True)
+    partition = cl.best_partition(G)
+    pos = nx.spring_layout(G)
+    cmap = cm.get_cmap('viridis', max(partition.values()) + 1)
+    nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=40, cmap=cmap, node_color=list(partition.values()))
+    nx.draw_networkx_edges(G, pos, alpha=0.5)
+    #plt.show()
     
 
 #
@@ -115,5 +126,3 @@ with open('data/High-School_data_2013.csv', 'r') as f:
         G.add_edge(int(line[1]), int(line[2]))
 
     # nx.draw(G, with_labels=True)
-
-plt.show()

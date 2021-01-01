@@ -9,7 +9,7 @@ The project consists in an analyse of the dataset concerning children in highsch
 
 Format of the file : "i j w"
 
-Meaning : *i* spent *x(w)* time with *j*
+Meaning : *i* reported spending *x(w)* time with *j*
 
 - **i** ID i of a person (int)
 - **j** ID j of another person (int)
